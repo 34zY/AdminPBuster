@@ -1,17 +1,8 @@
 #!/usr/bin/env python3
 
-import requests
-import subprocess
-import signal
-import sys
-import os
-import queue
-import argparse
-import time
-import random
+import requests, subprocess, signal, sys, os, queue, argparse, time, random, urllib3
 from threading import Thread, Lock
 from urllib.parse import urlparse
-import urllib3
 from pathlib import Path
 from termcolor import colored
 
@@ -20,7 +11,6 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 VERSION = "3.0"
 AUTHOR = "Chris 'SaintDruG' Abou-Chabke"
 TEAM = "Black Hat Ethical Hacking"
-PATHS_URL = "https://raw.githubusercontent.com/blackhatethicalhacking/AdminPBuster/refs/heads/main/magic_admin_paths.txt"
 
 request_counter = 0
 counter_lock = Lock()
@@ -43,8 +33,13 @@ def rainbow_text(text):
     colors = ['red', 'yellow', 'green', 'cyan', 'blue', 'magenta']
     return ''.join(colored(char, colors[i % len(colors)], attrs=["bold"]) if char != " " else " " for i, char in enumerate(text))
 
+# Logo is remotely catched and printed
 def print_ascii_and_quote():
-    subprocess.run("curl --silent https://raw.githubusercontent.com/blackhatethicalhacking/Subdomain_Bruteforce_bheh/main/ascii.sh | lolcat", shell=True)
+    
+    print(rainbow_text("""+-++-++-++-++-++-+ +-++-++-++-++-+
+ |B||H||E||H||'||s| |W||O||R||L||D|
+ +-++-++-++-++-++-+ +-++-++-++-++-+"""))
+    
     print("")
     quotes = [
         "The supreme art of war is to subdue the enemy without fighting.",
@@ -101,9 +96,9 @@ def countdown():
 
 def fetch_admin_paths():
     try:
-        response = requests.get(PATHS_URL, timeout=10)
-        response.raise_for_status()
-        return [line.strip() for line in response.text.splitlines() if line.strip()]
+        # Fetch the admin paths from the local file
+        reponse = open("magic_admin_paths.txt", "r")
+        return [line.strip() for line in reponse.readlines() if line.strip()]
     except Exception as e:
         print(colored(f"[!] Failed to fetch admin paths: {e}", "red", attrs=["bold"]))
         sys.exit(1)
