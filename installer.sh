@@ -6,7 +6,9 @@ apt update
 apt install -y toilet lolcat curl | lolcat
 
 echo "Installing Python packages..." | lolcat
-pip3 install requests termcolor urllib3 --break-system-packages
+# Instead of using --break-system-packages just mount a virtual environment for python
+# pip3 install requests termcolor urllib3 --break-system-packages
+pip3 install requests termcolor urllib3 
 
 echo "Making AdminPBuster.py executable..." | lolcat
 chmod +x AdminPBuster.py
