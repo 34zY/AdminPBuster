@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import requests, subprocess, signal, sys, os, queue, argparse, time, random, urllib3
 from threading import Thread, Lock
 from urllib.parse import urlparse
